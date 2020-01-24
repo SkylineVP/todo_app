@@ -3,17 +3,15 @@ module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     firstName: {
       type:DataTypes.STRING,
-      is:/[A-Z][a-z]*/,
       allowNull:false
     },
     lastName: {
       type:DataTypes.STRING,
-      is:/[A-Z][a-z]*/,
+
       allowNull:false
     },
     login: {
       type:DataTypes.STRING,
-      is:/^[^ ^()*&\\/].{6,16}$/,
       allowNull:false,
       unique: true
     },
@@ -29,7 +27,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {});
   User.associate = function(models) {
-    // associations can be defined here
+    User.hasMany(models.Task,{
+      as:"tasks"
+    });
   };
   return User;
 };

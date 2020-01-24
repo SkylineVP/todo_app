@@ -10,17 +10,14 @@ module.exports = {
       },
       firstName: {
         type: Sequelize.STRING,
-        is:/[A-Z][a-z]*/,
         allowNull:false
       },
       lastName: {
         type: Sequelize.STRING,
-        is:/[A-Z][a-z]*/,
         allowNull:false
       },
       login: {
         type: Sequelize.STRING,
-        is:/^[^ ^()*&\\/].{6,16}$/,
         allowNull:false,
         unique: true
       },
