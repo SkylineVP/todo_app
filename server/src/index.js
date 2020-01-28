@@ -1,23 +1,17 @@
 import express from "express"
-import {User} from './db/models'
+import router from "./routes";
+import errorHandler from "./middlewares/errorHandler";
+const cors=require("cors");
 const PORT = process.env.PORT || 5000;
+
 const app = express();
-app.use(express.json())
-app.get('/', function (req, res) {
-    res.send('Hello World!');
-});
+app.use(cors());
+
+app.use(express.json());
+
+app.use( router );
+app.use(errorHandler)
 
 app.listen(PORT, function () {
     console.log(`Example app listening on port ${PORT}!`);
-});
-app.post('/user',async (req, res,next) => {
-    try{
-        const createUser= await User.create(req.body);
-        res.send(createUser);
-    }
-    catch (e) {
-        next(e)
-
-    }
-
 });
