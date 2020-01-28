@@ -10,7 +10,14 @@ app.get('/', function (req, res) {
 app.listen(PORT, function () {
     console.log(`Example app listening on port ${PORT}!`);
 });
-app.post('/user',async (req, res) => {
-    const createUser= await User.create(req.body);
-    res.send(createUser);
+app.post('/user',async (req, res,next) => {
+    try{
+        const createUser= await User.create(req.body);
+        res.send(createUser);
+    }
+    catch (e) {
+        next(e)
+
+    }
+
 });

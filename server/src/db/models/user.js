@@ -21,9 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull:false,
       field:'passwordHash',
       set(val) {
-        bcrypt.hash(val,10).then(hash=>{
-          this.setDataValue(('password'),hash);
-        });
+          this.setDataValue(('password'),bcrypt.hashSync(val,10));
       }
     },
     email: {
@@ -33,6 +31,9 @@ module.exports = (sequelize, DataTypes) => {
       isEmail:true
     }
   }, {});
+  User.prototype.comparePassword=function(password){
+    return bcrypt.compare(password,this.password).then(res=>res)
+  }
   User.associate = function(models) {
     User.hasMany(models.Task,{
       as:"tasks"
