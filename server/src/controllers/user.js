@@ -42,11 +42,23 @@ export async function deleteUser(req,res,next) {
             }
 
         });
-        if(deletedRows) {
-            return  res.status(200).send(`${deletedRows}`);
+        if (deletedRows) {
+            return res.status(200).send(`${deletedRows}`);
         }
+    } catch (e) {
+        next(e)
     }
-    catch (e) {
+
+}
+
+export async function getUserById( req, res, next ) {
+    try {
+        const user = await User.findByPk(req.params.userId);
+        if (user) {
+            const data = user.get();
+            return res.status(200).send(data);
+        } else res.status(404);
+    } catch (e) {
         next(e)
     }
 
