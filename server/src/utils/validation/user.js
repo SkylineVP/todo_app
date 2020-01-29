@@ -1,20 +1,26 @@
 import Joi from '@hapi/joi'
-const nameSchema=Joi.string().pattern(/^[A-Z][a-z]{0.63}$/);
-const loginSchema=Joi.string().pattern(/(?!^\d)^\w{6,16}$/);
-const passwordSchema=Joi.string().pattern(/(?=.*?\d)(?=.*?[a-z])(?=.*?[A-Z])^[a-zA-Z_$@%!#]{8,60}$/);
+import {LOGIN_PATTERN, PASSWORD_PATTERN, USER_NAME_PATTERN} from "../../constants";
+const nameSchema=Joi.string().pattern(USER_NAME_PATTERN);
+const loginSchema=Joi.string().pattern(LOGIN_PATTERN);
+const passwordSchema=Joi.string().pattern(PASSWORD_PATTERN);
 const emailSchema=Joi.string().email();
 
-export const createUserSchema =Joi.object({
-    firstName:nameSchema.required(),
-    lastName:nameSchema.required(),
-    login:loginSchema.required(),
-    password:passwordSchema.required(),
-    email:emailSchema.required()
-}).min(1).max(5);
-export const updateUserSchema =Joi.object({
-    firstName:nameSchema,
-    lastName:nameSchema,
-    login:loginSchema,
-    password:passwordSchema,
+export default Joi.object({
+    firstName:nameSchema.when(`$isCreate`,{
+        then:nameSchema.required,
+        otherwise:nameSchema
+    }),
+    lastName:nameSchema.when(`$isCreate`,{
+        then:nameSchema.required,
+        otherwise:nameSchema
+    }),
+    login:loginSchema.when(`$isCreate`,{
+        then:loginSchema.required,
+        otherwise:loginSchema
+    }),
+    password:passwordSchema.when(`$isCreate`,{
+        then:passwordSchema.required,
+        otherwise:passwordSchema
+    }),
     email:emailSchema
 }).min(1).max(5);

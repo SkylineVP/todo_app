@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use( router );
-app.use(errorHandler)
+app.use(errorHandler);
 
 app.listen(PORT, function () {
     console.log(`Example app listening on port ${PORT}!`);

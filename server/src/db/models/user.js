@@ -1,20 +1,24 @@
 'use strict';
+import {LOGIN_PATTERN, PASSWORD_PATTERN, USER_NAME_PATTERN} from "../../constants";
+
 const bcrypt =require('bcrypt');
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     firstName: {
       type:DataTypes.STRING,
-      allowNull:false
+      allowNull:false,
+      is:USER_NAME_PATTERN
     },
     lastName: {
       type:DataTypes.STRING,
-
+      is:USER_NAME_PATTERN,
       allowNull:false
     },
     login: {
       type:DataTypes.STRING,
       allowNull:false,
-      unique: true
+      unique: true,
+      is:LOGIN_PATTERN
     },
     password: {
       type:DataTypes.STRING,
@@ -33,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   User.prototype.comparePassword=function(password){
     return bcrypt.compare(password,this.password).then(res=>res)
-  }
+  };
   User.associate = function(models) {
     User.hasMany(models.Task,{
       as:"tasks"
