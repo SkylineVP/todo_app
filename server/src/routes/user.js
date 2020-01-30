@@ -1,7 +1,7 @@
 import express from "express";
-import {createUser, deleteUser, getUserById, updateUser} from "../controllers/user";
+import {createUser, deleteUser, getUserById, updateUser} from "../controllers/user.controller";
 import {validateUserOnCreate, validateUserOnUpdate} from "../middlewares/user/validateUser";
-import {ACTIONS} from "../constants";
+
 
 const userRouter = express.Router();
 userRouter.post('/',validateUserOnCreate,createUser);

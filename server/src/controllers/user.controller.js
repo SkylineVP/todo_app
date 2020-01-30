@@ -1,8 +1,8 @@
 import {User} from '../db/models'
+import AppErrors from '../utils/aplication_errors'
 export async function createUser(req,res,next) {
     try {
     const createdUser=await User.create(req.userValue,{
-
     });
     if (createdUser){
         const data=createdUser.get();
@@ -28,6 +28,7 @@ export async function updateUser(req,res,next) {
             delete data.password;
            return  res.status(201).send(data)
         }
+        next( new AppErrors.ResourceNotFoundError( 'User' ) );
     }
     catch (e) {
         next(e)
@@ -45,6 +46,7 @@ export async function deleteUser(req,res,next) {
         if (deletedRows) {
             return res.status(200).send(`${deletedRows}`);
         }
+        next( new AppErrors.ResourceNotFoundError( 'User' ) );
     } catch (e) {
         next(e)
     }
@@ -57,7 +59,8 @@ export async function getUserById( req, res, next ) {
         if (user) {
             const data = user.get();
             return res.status(200).send(data);
-        } else res.status(404);
+        } else {
+            next( new AppErrors.ResourceNotFoundError( 'User' ) );}
     } catch (e) {
         next(e)
     }
